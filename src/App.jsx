@@ -7,16 +7,24 @@ import Contacts from './components/Contacts';
 
 const App = () => {
 
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [persons, setPersons] = useState();
-
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newSearch, setNewSearch] = useState("")
 
   const hook = () => {
-    axios.get('http://localhost:3001/persons').then(response => {
-      setPersons(response.data)
-    })
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('request fulfilled')
+        setPersons(response.data)
+        setIsLoading(false)
+        })
+      .catch(error => {
+        setError({message: error})
+      })
   }
 
   useEffect(hook, [])
@@ -46,15 +54,30 @@ const App = () => {
       setNewPhone('')
     } else {
       const personObj = {
-      id: persons.length + 1,
       name: newName,
       phone: newPhone
       }
-      setPersons(persons.concat(personObj))
-      setNewName('')
-      setNewPhone('')
+      // setPersons(persons.concat(personObj))
+      // setNewName('')
+      // setNewPhone('')
+      axios
+        .post('http://localhost:3001/persons', personObj)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewPhone('')
+        })
+        .catch(error => console.log('unable to add contact', error))
     }
     
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>
   }
   
 
