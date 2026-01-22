@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
+import contactService from './services/contacts';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Contacts from './components/Contacts';
@@ -15,13 +15,13 @@ const App = () => {
   const [newSearch, setNewSearch] = useState("")
 
   const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
+    contactService
+      .getAll()
       .then(response => {
         console.log('request fulfilled')
         setPersons(response.data)
         setIsLoading(false)
-        })
+      })
       .catch(error => {
         setError({message: error})
       })
@@ -60,14 +60,13 @@ const App = () => {
       // setPersons(persons.concat(personObj))
       // setNewName('')
       // setNewPhone('')
-      axios
-        .post('http://localhost:3001/persons', personObj)
+      contactService
+        .create(personObj)
         .then(response => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewPhone('')
         })
-        .catch(error => console.log('unable to add contact', error))
     }
     
   }
