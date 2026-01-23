@@ -89,7 +89,7 @@ const App = () => {
       <h2>Add a New Person</h2>
       <PersonForm submitHandler={addPerson} newName={newName} handleNameChange={handleNewNameChange} newPhone={newPhone} handlePhoneChange={handleNewPhoneChange} />
       <h2>Contacts</h2>
-      <Contacts contacts={persons} />
+      <Contacts contacts={persons} setContacts={setPersons}/>
     </div>
   )
 }
