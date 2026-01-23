@@ -1,0 +1,11 @@
+.successMsg {
+    background:rgb(152, 242, 152);
+    color: rgb(1, 47, 1);
+    padding: 10px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    text-align: center;
+    border: 2px solid rgb(1, 47, 1)
+}

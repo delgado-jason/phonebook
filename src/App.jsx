@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import './index.css'
 
 import contactService from './services/contacts';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Contacts from './components/Contacts';
+import Notification from './components/Notification';
 
 const App = () => {
 
@@ -13,6 +15,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newSearch, setNewSearch] = useState("")
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const hook = () => {
     contactService
@@ -57,13 +60,14 @@ const App = () => {
       name: newName,
       phone: newPhone
       }
-      // setPersons(persons.concat(personObj))
-      // setNewName('')
-      // setNewPhone('')
       contactService
         .create(personObj)
         .then(response => {
           setPersons(persons.concat(response.data))
+          setSuccessMessage(`Added ${personObj.name} successfuly`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
           setNewName('')
           setNewPhone('')
         })
@@ -83,6 +87,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage}/>
       <div>
         <Filter search={newSearch} handler={handleSearchChange} />
       </div>
